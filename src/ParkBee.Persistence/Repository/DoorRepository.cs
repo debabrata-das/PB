@@ -70,7 +70,7 @@ namespace ParkBee.Persistence.Repository
         {
             DoorStatus oldDoorStatus = door.Status;
 
-            var loadedDoor = await _context.Doors.FindAsync(door.Identifier);
+            var loadedDoor = await _context.Doors.FindAsync(door.Identifier, cancellationToken);
             loadedDoor.Status = newDoorStatus;
 
             await SaveDoorStatusToDoorStatusHistory(loadedDoor, oldDoorStatus, newDoorStatus, cancellationToken);
