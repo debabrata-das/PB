@@ -17,13 +17,11 @@ namespace ParkBee.WebApplication.Server.Controllers
     [Route("[controller]")]
     public class GaragesController : ControllerBase
     {
-        private readonly IGarageRepository _garageRepository;
         private readonly ILoggerManager _logger;
         private readonly IMediator _mediator;
 
-        public GaragesController(IGarageRepository garageRepository, ILoggerManager logger, IMediator mediator)
+        public GaragesController(ILoggerManager logger, IMediator mediator)
         {
-            _garageRepository = garageRepository;
             _logger = logger;
             _mediator = mediator;
         }
