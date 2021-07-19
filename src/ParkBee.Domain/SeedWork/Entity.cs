@@ -35,5 +35,21 @@ namespace ParkBee.Domain.SeedWork
             }
             return item.Id == Id;
         }
+        
+        public override int GetHashCode()
+        {
+            if (IsTransient())
+            {
+                return default(Guid).GetHashCode();
+            }
+
+            if (_requestedHashCode.HasValue)
+            {
+                return _requestedHashCode.Value;
+            }
+
+            _requestedHashCode = Id.GetHashCode() ^ 31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
+            return _requestedHashCode.Value;
+        }
     }
 }
