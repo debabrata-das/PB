@@ -1,0 +1,159 @@
+﻿@page "/"
+@page "/Garages"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using ParkBee.WebApplication.Shared
+@attribute [Authorize]
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime
+<style>
+    body {
+        font-family: sans-serif;
+    }
+
+    .doorstatuscolor.online {
+        background: #006400;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+    }
+
+    .doorstatuscolor.almostfull {
+        background: #f0e68c;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+    }
+
+    .doorstatuscolor.almostempty {
+        background: #28b62c;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+    }
+
+    .doorstatuscolor.onlinebutfull {
+        background: #ff4500;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+    }
+
+    .doorstatuscolor.offline {
+        background: #FF4136;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+    }
+</style>
+
+<h1>Garages</h1>
+@if (_garages == null)
+{
+    <p>This component demonstrates fetching data from the server.</p>
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var garageDto in _garages)
+    {
+        <br />
+        <h4>Garage Details</h4>
+        <p>Name - <b>@garageDto.Name</b>, Garage Id - <i>@garageDto.Identifier.ToString("N")</i></p>
+        
+        <h5>Owner Contact Details</h5>
+        <p>Name - <b>@garageDto.Owner.FirstName @garageDto.Owner.LastName</b>, Contact details -  <b>@garageDto.Owner.Email</b>, <b>@garageDto.Owner.Phone</b></p>
+
+        <h5>Address</h5>
+        <p>
+            @garageDto.Address.Street, @garageDto.Address.ZipCode <br />
+            @garageDto.Address.City, @garageDto.Address.State,@garageDto.Address.Country,
+        </p>
+        <br />
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Identifier</th>
+                    <th>Ip Address</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var door in garageDto.Doors)
+                {
+                    <tr>
+                        <td>@door.Name</td>
+                        <td>@door.Identifier.ToString("N")</td>
+                        <td>@door.IpAddress</td>
+                        <td>
+                            @if (door.DoorStatus == DoorStatusDto.Offline)
+                            {
+                                <span class="doorstatuscolor offline"></span>
+                            }
+                            else if (door.DoorStatus == DoorStatusDto.Online)
+                            {
+                                <span class="doorstatuscolor online"></span>
+                            }
+                            else if (door.DoorStatus == DoorStatusDto.OnlineAndQuiteEmpty)
+                            {
+                                <span class="doorstatuscolor almostempty"></span>
+                            }
+                            else if (door.DoorStatus == DoorStatusDto.OnlineAndAlmostFull)
+                            {
+                                <span class="doorstatuscolor almostfull"></span>
+                            }
+                            else if (door.DoorStatus == DoorStatusDto.OnlineButFull)
+                            {
+                                <span class="doorstatuscolor onlinebutfull"></span>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        <br />
+        <button class="btn btn-primary" @onclick="(() => RefreshDoorStatus())">
+            Refresh Door Status
+        </button>
+    }
+}
+
+@code {
+    private GarageDto[] _garages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _garages = await Http.GetFromJsonAsync<GarageDto[]>("Garages");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    @inject NavigationManager NavigationManager;
+
+    public async Task RefreshDoorStatus()
+    {
+        await InvokeAsync(() =>
+        {
+            this.StateHasChanged();
+        });
+
+        NavigationManager.NavigateTo("/", true);
+    }
+
+}
