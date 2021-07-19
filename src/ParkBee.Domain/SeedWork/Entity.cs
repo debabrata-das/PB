@@ -47,15 +47,5 @@ namespace ParkBee.Domain.SeedWork
              
             return base.GetHashCode();
         }
-
-        /*public static bool operator ==(Entity left, Entity right)
-        {
-            return left?.Equals(right) ?? Equals(right, null);
-        }
-
-        public static bool operator !=(Entity left, Entity right)
-        {
-            return !(left == right);
-        }*/
     }
 }
