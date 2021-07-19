@@ -1,7 +1,6 @@
-# ParkBee
-ParkBee Assignment
+# Introduction
 
-A RESTful ASP.NET Core API using Blazor as the client-side UI framework for the ParkBee Assignment
+A RESTful ASP.NET Core API using Blazor as the client-side UI framework
 
 ## Prerequirements
 
