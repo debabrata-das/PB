@@ -35,17 +35,5 @@ namespace ParkBee.Domain.SeedWork
             }
             return item.Id == Id;
         }
-
-        public override int GetHashCode()
-        {
-            if (!IsTransient())
-            {
-                _requestedHashCode ??= Id.GetHashCode() ^ 31;
-
-                return _requestedHashCode.Value;
-            }
-             
-            return base.GetHashCode();
-        }
     }
 }
