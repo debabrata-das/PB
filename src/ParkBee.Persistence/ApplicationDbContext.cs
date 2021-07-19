@@ -12,30 +12,12 @@ using ParkBee.Persistence.Models;
 
 namespace ParkBee.Persistence
 {
-    //public class SchoolDBInitializer : DropCreateDatabaseAlways<SchoolDBContext>
-    //{
-    //    protected override void Seed(ApplicationDbContext context)
-    //    {
-    //        IList<Garage> defaultStandards = new List<Garage>();
-
-    //        defaultStandards.Add(new Garage() { Name = "Garage 1", Identifier = Guid.NewGuid() });
-    //        defaultStandards.Add(new Garage() { Name = "Garage 1", Identifier = Guid.NewGuid() });
-    //        defaultStandards.Add(new Garage() { Name = "Garage 1", Identifier = Guid.NewGuid() });
-
-    //        context.Garages.AddRange(defaultStandards);
-
-    //        base.Seed(context);
-    //    }
-    //}
-
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IUnitOfWork
     {
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
-        {
-            
-        }
+        { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
