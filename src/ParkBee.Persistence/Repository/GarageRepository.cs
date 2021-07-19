@@ -28,7 +28,7 @@ namespace ParkBee.Persistence.Repository
 
         public async Task<Garage> GetByIdentifier(Guid identifier, CancellationToken cancellationToken)
         {
-            var garage = await _context.Garages.FindAsync(identifier);
+            var garage = await _context.Garages.FindAsync(identifier, cancellationToken);
             if (garage != null)
             {
                 return _context.Garages.Include(g => g.Doors)
